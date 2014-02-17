@@ -2,14 +2,46 @@ use strict;
 use warnings;
 
 package Data::Remember::DBM;
+{
+  $Data::Remember::DBM::VERSION = '0.140480';
+}
 use base qw/ Data::Remember::Memory /;
+# ABSTRACT: a long-term memory brain plugin for Data::Remember
 
 use Carp;
 use DBM::Deep;
 
+
+sub new {
+    my $class = shift;
+    my %args  = @_;
+
+    croak 'You must specify a "file" to store the data in.'
+        unless $args{file};
+
+    bless { brain => DBM::Deep->new( $args{file} ) }, $class;
+}
+
+
+sub dbm {
+    my $self = shift;
+    return $self->{brain};
+}
+
+
+1;
+
+__END__
+
+=pod
+
 =head1 NAME
 
 Data::Remember::DBM - a long-term memory brain plugin for Data::Remember
+
+=head1 VERSION
+
+version 0.140480
 
 =head1 SYNOPSIS
 
@@ -27,30 +59,11 @@ This is a brain plugin module for L<Data::Memory> that persists everything store
 
 Pass the name of the file to use to store the persistent data in. The "file" argument is required.
 
-=cut
-
-sub new {
-    my $class = shift;
-    my %args  = @_;
-
-    croak 'You must specify a "file" to store the data in.'
-        unless $args{file};
-
-    bless { brain => DBM::Deep->new( $args{file} ) }, $class;
-}
-
 =head2 dbm
 
 If you need to do any locking or additional work with L<DBM::Deep> directly, use this method to get a reference to the current instance.
 
   my $dbm = brain->dbm;
-
-=cut
-
-sub dbm {
-    my $self = shift;
-    return $self->{brain};
-}
 
 =head1 SEE ALSO
 
@@ -58,14 +71,13 @@ L<Data::Remember>, L<Data::Remember::Memory>
 
 =head1 AUTHOR
 
-Andrew Sterling Hanenkamp C<< <hanenkamp@cpan.org> >>
+Andrew Sterling Hanenkamp <hanenkamp@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007 Boomer Consulting, Inc. All Rights Reserved.
+This software is copyright (c) 2014 by Qubling Software LLC.
 
-This program is free software and may be modified and distributed under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-1;
