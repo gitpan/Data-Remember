@@ -3,7 +3,7 @@ use warnings;
 
 package Data::Remember::DBM;
 {
-  $Data::Remember::DBM::VERSION = '0.140480';
+  $Data::Remember::DBM::VERSION = '0.140490';
 }
 use base qw/ Data::Remember::Memory /;
 # ABSTRACT: a long-term memory brain plugin for Data::Remember
@@ -41,7 +41,7 @@ Data::Remember::DBM - a long-term memory brain plugin for Data::Remember
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 

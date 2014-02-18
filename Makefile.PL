@@ -34,7 +34,7 @@ my %WriteMakefileArgs = (
     "POE" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "0.140480",
+  "VERSION" => "0.140490",
   "test" => {
     "TESTS" => "t/*.t"
   }

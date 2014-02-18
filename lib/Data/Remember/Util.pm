@@ -1,6 +1,6 @@
 package Data::Remember::Util;
 {
-  $Data::Remember::Util::VERSION = '0.140480';
+  $Data::Remember::Util::VERSION = '0.140490';
 }
 use strict;
 use warnings;
@@ -76,7 +76,7 @@ Data::Remember::Util - common helper utilities
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 

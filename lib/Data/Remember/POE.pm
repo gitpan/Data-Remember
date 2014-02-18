@@ -3,7 +3,7 @@ use warnings;
 
 package Data::Remember::POE;
 {
-  $Data::Remember::POE::VERSION = '0.140480';
+  $Data::Remember::POE::VERSION = '0.140490';
 }
 # ABSTRACT: a brain for Data::Remember linked to the POE session heap
 
@@ -72,7 +72,7 @@ Data::Remember::POE - a brain for Data::Remember linked to the POE session heap
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 

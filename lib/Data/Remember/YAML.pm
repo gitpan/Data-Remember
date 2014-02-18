@@ -3,7 +3,7 @@ use warnings;
 
 package Data::Remember::YAML;
 {
-  $Data::Remember::YAML::VERSION = '0.140480';
+  $Data::Remember::YAML::VERSION = '0.140490';
 }
 use base qw/ Data::Remember::Memory /;
 # ABSTRACT: a frozen memory brain plugin for Data::Remember
@@ -63,7 +63,7 @@ Data::Remember::YAML - a frozen memory brain plugin for Data::Remember
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 

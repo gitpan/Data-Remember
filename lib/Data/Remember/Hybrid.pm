@@ -3,7 +3,7 @@ use warnings;
 
 package Data::Remember::Hybrid;
 {
-  $Data::Remember::Hybrid::VERSION = '0.140480';
+  $Data::Remember::Hybrid::VERSION = '0.140490';
 }
 # ABSTRACT: a brain for Data::Remember with multiple personalities
 
@@ -176,7 +176,7 @@ Data::Remember::Hybrid - a brain for Data::Remember with multiple personalities
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 

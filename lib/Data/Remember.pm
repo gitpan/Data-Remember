@@ -3,7 +3,7 @@ use warnings;
 
 package Data::Remember;
 {
-  $Data::Remember::VERSION = '0.140480';
+  $Data::Remember::VERSION = '0.140490';
 }
 # ABSTRACT: remember complex information without giving yourself a headache
 
@@ -33,6 +33,7 @@ sub _import_brain {
     *{"$package\::remember"}          = remember($brain);
     *{"$package\::remember_these"}    = remember_these($brain);
     *{"$package\::recall"}            = recall($brain);
+    *{"$package\::recall_each"}       = recall_each($brain);
     *{"$package\::recall_and_update"} = recall_and_update($brain);
     *{"$package\::forget"}            = forget($brain);
     *{"$package\::forget_when"}       = forget_when($brain);
@@ -73,6 +74,17 @@ sub recall {
         my $que = shift;
 
         return scalar $brain->recall($que);
+    };
+}
+
+
+sub recall_each {
+    my $brain = shift;
+
+    sub ($) {
+        my $que = shift;
+
+        return scalar $brain->recall_each($que);
     };
 }
 
@@ -133,7 +145,7 @@ Data::Remember - remember complex information without giving yourself a headache
 
 =head1 VERSION
 
-version 0.140480
+version 0.140490
 
 =head1 SYNOPSIS
 
@@ -213,7 +225,7 @@ The C<@options> are whatever options described in the brain's module documentati
 
 =head2 remember $que, $fact
 
-Remember the given C<$fact> at memory que C<$que>. See L</QUE> for an in depth discussion of C<$que>. The C<$fact> can be anything your brain can store. This will generally include, at least, scalars, hash references, and array references.
+Remember the given C<$fact> at memory que C<$que>. See L<Data::Remember::Class/QUE> for an in depth discussion of C<$que>. The C<$fact> can be anything your brain can store. This will generally include, at least, scalars, hash references, and array references.
 
 =head2 remember_these $que, $fact
 
@@ -227,9 +239,33 @@ Stores the given C<$fact> at the give C<$que>, but stores it by pushing it onto 
 
 =head2 recall $que
 
-Recalls a previously stored fact located at the memory location described by C<$que>. See L</QUE> for an in depth discussion of that argument.
+Recalls a previously stored fact located at the memory location described by C<$que>. See L<Data::Remember::Class/QUE> for an in depth discussion of that argument.
 
 If no fact is found at that que, C<undef> will be returned.
+
+=head2 recall_each $que
+
+Returns an iterator that can be used to iterate over all the facts stored under C<$que>. See L<Data::Remember::Class/QUE> for more information on the que. The way the iterator works will depend on what kind of data C<$que> points to.
+
+=over
+
+=item *
+
+L<Hash.> For hashes, the iterator will work similar to the built-in C<each> operator. It will return each key/value pair found in the hash in no particular order.
+
+=item *
+
+L<Array.> For arrays, the iterator will return each index and value as a pair, in order.
+
+=item *
+
+L<Scalar.> For anything else, it will return a single pair. The first element in the pair will be C<undef> and the second will be the scalar value.
+
+=back
+
+When the iterator is finished it returns an empty list.
+
+The iterator captures the keys and array length at the time it was created. If changes are made to the data stored, it will return the same keys or array indexes that were stored at the moment of the call, but the values returned will be whatever is current stored. If the value at the que is removed entirely, the iterator closes over the original reference and will proceed anyway.
 
 =head2 recall_and_update { ... } $que
 
@@ -243,7 +279,7 @@ any modification to C<$_> will be stored back into the given que. The result of 
 
 =head2 forget $que
 
-Tells the brain to forget a previously remembered fact stored at C<$que>. See L</QUE> for an in depth discussion of the argument. If no fact is stored at the given C<$que>, this subroutine does nothing.
+Tells the brain to forget a previously remembered fact stored at C<$que>. See L<Data::Remember::Class/QUE> for an in depth discussion of the argument. If no fact is stored at the given C<$que>, this subroutine does nothing.
 
 =head2 forget_when { ... } $que
 
@@ -272,11 +308,11 @@ If you would like to create a custom brain plugin, you need to create a package 
 
 The C<new> method will take the list of options passed to L</import> for your brain in addition to the class name. It should return a blessed reference that will be used for all further method calls.
 
-The C<remember> method will be passed a normalized reference to a que array and the fact the user has asked to store. You should read through L</QUE> and handle the first argument as described there. Then, store the second argument at the memory location described.
+The C<remember> method will be passed a normalized reference to a que array and the fact the user has asked to store. You should read through L<Data::Remember::Class/QUE> and handle the first argument as described there. Then, store the second argument at the memory location described.
 
-The C<recall> method will be passed a normalized reference to a que array, which should be treated as described in L</QUE>. Your implementation should return the fact stored at that location or C<undef>. It's important that your implementation avoid the pit-falls caused by auto-vivifying keys. The C<recall> method should never modify the memory of your brain.
+The C<recall> method will be passed a normalized reference to a que array, which should be treated as described in L<Data::Remember::Class/QUE>. Your implementation should return the fact stored at that location or C<undef>. It's important that your implementation avoid the pit-falls caused by auto-vivifying keys. The C<recall> method should never modify the memory of your brain.
 
-The C<forget> method will be passed a normalized reference to a que array, which should be treated as described in L</QUE>. Your implementation should then delete any fact stored there. Other than deleting this key, the C<forget> method should not modify any other aspect of the memory of your brain.
+The C<forget> method will be passed a normalized reference to a que array, which should be treated as described in L<Data::Remember::Class/QUE>. Your implementation should then delete any fact stored there. Other than deleting this key, the C<forget> method should not modify any other aspect of the memory of your brain.
 
 To build a brain, I highly recommend extending L<Data::Remember::Memory>, which performs (or should perform) all the work of safely storing and fetching records from a Perl data structure according to the interface described here. It stores everything under C<< $self->{brain} >>. At the very least, you should read through that code before building your brain.
 

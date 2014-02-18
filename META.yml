@@ -27,4 +27,4 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-Remember
   repository: git://github.com/zostay/Data-Remember.git
-version: 0.140480
+version: 0.140490
